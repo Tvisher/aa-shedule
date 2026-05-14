@@ -1,3 +1,43 @@
-html {
-  background: #2b2b2b;
+body {
+  background-color: #2b2b2b !important;
+}
+
+.shedule-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px 0;
+}
+
+.shedule-head__title {
+  font-family: Unbounded;
+  color: #f1eeee;
+  font-size: 42px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%;
+}
+
+.shedule-head__btn {
+  cursor: pointer;
+  color: #e15b00;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  .ico {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 2px solid #e15b00;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.02);
+  }
 }
