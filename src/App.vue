@@ -37,48 +37,35 @@ const events = ref([
   },
 ]);
 
-// Добавьте эту функцию к вашему коду в <script setup>
 const formatWeekTitle = (start, end) => {
   if (!start || !end) return "";
 
-  const monthStart = start.format("MMMM"); // Месяц начала (например, 'апрель')
-  const monthEnd = end.format("MMMM"); // Месяц конца
+  const monthStart = start.format("MMMM");
+  const monthEnd = end.format("MMMM");
   const yearStart = start.format("YYYY");
   const yearEnd = end.format("YYYY");
 
-  // Функция для заглавной буквы (русская локаль возвращает месяцы со строчной)
   const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-
-  // 1. Неделя в пределах одного месяца (самый частый случай: Апрель 13-19, 2026)
   if (monthStart === monthEnd) {
     return `${capitalize(monthStart)} ${start.format("D")}-${end.format("D")}, ${yearStart}`;
-  }
-  // 2. Неделя на стыке месяцев (например: Апрель 27 - Май 3, 2026)
-  else if (yearStart === yearEnd) {
+  } else if (yearStart === yearEnd) {
     return `${capitalize(monthStart)} ${start.format("D")} - ${capitalize(monthEnd)} ${end.format("D")}, ${yearStart}`;
-  }
-  // 3. Неделя на стыке годов (например: Декабрь 28, 2025 - Январь 3, 2026)
-  else {
+  } else {
     return `${capitalize(monthStart)} ${start.format("D")}, ${yearStart} - ${capitalize(monthEnd)} ${end.format("D")}, ${yearEnd}`;
   }
 };
 
 function formatRecordCount(count) {
-  // Берем модуль числа на случай, если передадут отрицательное значение
   const n = Math.abs(count);
 
-  // Получаем остаток от деления на 100 и на 10
   const mod100 = n % 100;
   const mod10 = n % 10;
 
   let word;
 
-  // Сначала проверяем исключения второго десятка (11-14)
   if (mod100 >= 11 && mod100 <= 14) {
     word = "записей";
-  }
-  // Затем проверяем последнюю цифру
-  else if (mod10 === 1) {
+  } else if (mod10 === 1) {
     word = "запись";
   } else if (mod10 >= 2 && mod10 <= 4) {
     word = "записи";
@@ -129,18 +116,15 @@ function formatRecordCount(count) {
       :disable-views="['years', 'year']"
       class="vuecal--custom-theme"
     >
-      <!-- Слот для заголовка дат -->
       <template #title="{ title, view }">
         <span v-if="view.id === 'week'">
           {{ formatWeekTitle(view.startDate, view.endDate) }}
         </span>
-        <!-- Для режимов День и Месяц оставляем стандартный заголовок -->
         <span v-else>
           {{ title }}
         </span>
       </template>
 
-      <!-- Слот для карточки события (День/Неделя) -->
       <template #event="{ event }">
         <div class="event-card">
           <div class="event-header">
@@ -167,6 +151,12 @@ function formatRecordCount(count) {
             <div v-else class="cell-count">—</div>
           </div>
         </div>
+
+        <span
+          class="vuecal__no-event"
+          v-if="['week', 'day'].includes(view.id) && !events.length"
+          >Записей нет</span
+        >
       </template>
     </vue-cal>
   </div>
@@ -175,8 +165,6 @@ function formatRecordCount(count) {
 <style lang="scss">
 .vuecal__cell--today {
   background-color: transparent;
-}
-.vuecal--month-view {
 }
 
 .vuecal--day-view .vuecal__time-column .vuecal__time-cell-line:before {
